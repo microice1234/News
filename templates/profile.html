@@ -1,0 +1,219 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container emp-profile">
+    <div class="">
+            <form method="POST" action="/profile">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="profile-head">
+                                    <h3>
+                                        {{ fname }} {{ lname }}
+                                    </h3>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                       aria-controls="profile" aria-selected="false">Prefferences</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Email</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input type="email" class="form-control" name="editEmail"
+                                                          value="{{ email }}"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Phone no</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input type="text" class="form-control" name="editContactNo"
+                                                          value="{{ contactNo }}"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Modify Password</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input type="password" class="form-control" name="editPassword"
+                                                          placeholder="New Password"></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Country</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{ country }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                            </div>
+                            </ul>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label>World News</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="checkbox checbox-switch switch-primary">
+                                                    <label>
+                                                        {% if 'World News' in listofpreff %}
+                                                            <input type="checkbox" name="prefflist" value="World News"
+                                                               checked/>
+                                                            <span></span>
+                                                        {% else %}
+                                                            <input type="checkbox" name="prefflist" value="World News"/>
+                                                            <span></span>
+                                                        {% endif %}
+
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label>Country</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="checkbox checbox-switch switch-primary">
+                                                    <label>
+                                                        {% if 'Country' in listofpreff %}
+                                                            <input type="checkbox" name="prefflist" value="Country"
+                                                                   checked="" />
+                                                            <span></span>
+                                                        {% else %}
+                                                            <input type="checkbox" name="prefflist" value="Country"/>
+                                                            <span></span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label>Sports</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="checkbox checbox-switch switch-primary">
+                                                    <label>
+                                                        {% if 'Sports' in listofpreff %}
+                                                            <input type="checkbox" name="prefflist" value="Sports"
+                                                                   checked="" />
+                                                            <span></span>
+                                                        {% else %}
+                                                            <input type="checkbox" name="prefflist" value="Sports"/>
+                                                            <span></span>
+                                                        {% endif %}
+
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label>Literature</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="checkbox checbox-switch switch-primary">
+                                                    <label>
+                                                        {% if 'Literature' in listofpreff %}
+                                                            <input type="checkbox" name="prefflist" value="Literature"
+                                                               checked="" />
+                                                            <span></span>
+                                                        {% else %}
+                                                            <input type="checkbox" name="prefflist" value="Literature"/>
+                                                            <span></span>
+                                                        {% endif %}
+
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label>Science</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="checkbox checbox-switch switch-primary">
+                                                    <label>
+                                                        {% if 'Science' in listofpreff %}
+                                                            <input type="checkbox" name="prefflist" value="Science"
+                                                               checked="" />
+                                                            <span></span>
+                                                        {% else %}
+                                                            <input type="checkbox" name="prefflist" value="Science"/>
+                                                            <span></span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label>Politics</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="checkbox checbox-switch switch-primary">
+                                                    <label>
+                                                        {% if 'Politics' in listofpreff %}
+                                                            <input type="checkbox" name="prefflist" value="Politics"
+                                                               checked="" />
+                                                            <span></span>
+                                                        {% else %}
+                                                            <input type="checkbox" name="prefflist" value="Politics"/>
+                                                            <span></span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label>Economy</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="checkbox checbox-switch switch-primary">
+                                                    <label>
+                                                        {% if 'Economy' in listofpreff %}
+                                                            <input type="checkbox" name="prefflist" value="Economy"
+                                                               checked="" />
+                                                            <span></span>
+                                                        {% else %}
+                                                            <input type="checkbox" name="prefflist" value="Economy"/>
+                                                            <span></span>
+                                                        {% endif %}
+
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>
+{% endblock %}

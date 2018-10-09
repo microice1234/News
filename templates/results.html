@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+<section>
+    <div class="row">
+        <div class="col">
+            <p class="text-muted">About {{jso['totalResults']}} results for "{{userReq}}":</p>
+        </div>
+        <div class="col">
+            <p class="text-muted float-right">Page: {{ pg }} </p>
+        </div>
+    </div>
+    <nav aria-label="pagenav">
+        <ul class="pagination row">
+            <div class="col">
+                <li class="page-item float-left {% if pg == '1' %}disabled{% endif %}">
+                  <a class="page-link" href="/search/{{prevpage}}/?query={{userReq}}">&laquo;Previous</a>
+                </li>
+            </div>
+            <div class="col">
+                <li class="page-item float-right {% if pg == lastpage %}disabled{% endif %}">
+                  <a class="page-link" href="/search/{{nextpage}}/?query={{userReq}}">Next&raquo;</a>
+                </li>
+            </div>
+
+        </ul>
+    </nav>
+    <ul class="list-group">
+        {% for item in articlePageList[0] %}
+            <li class="list-group-item">
+                <div class="d-flex align-items-start align-items-center">
+                    <img class="align-middle img-thumbnail" src="{{item['urlToImage']}}" height="120" width="200" alt="image failed to load">
+                    <div class="ml-3">
+                        <a href="/article/{{item['title']}}">
+                            <h5>
+                                {{item['title']}}
+                            </h5>
+                        </a>
+                        <small class="text-muted text-truncate">{{item['source']['name']}}</small>
+                        <p>
+                            {{item['description']}}
+                        </p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+<nav aria-label="pagenav">
+    <ul class="pagination row mt-3">
+        <div class="col">
+            <li class="page-item float-left {% if pg == '1' %}disabled{% endif %}">
+              <a class="page-link" href="/search/{{prevpage}}/?query={{userReq}}">&laquo;Previous</a>
+            </li>
+        </div>
+        <div class="col">
+            <li class="page-item float-right {% if pg == lastpage %}disabled{% endif %}">
+              <a class="page-link" href="/search/{{nextpage}}/?query={{userReq}}">Next&raquo;</a>
+            </li>
+        </div>
+
+    </ul>
+</nav>
+</div>
+{% endblock %}

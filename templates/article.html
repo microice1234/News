@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <ul class="list-group-flush">
+                <li class="list-group-item">
+                    <h1>{{ title }}</h1>
+                </li>
+                <li class="list-group-item">
+                    <small class="text-muted">{{ date }}</small>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <img class="responsive" style="max-width: 100%;" src="{{ neededImgUrl }}"/>
+                    </div>
+                </li>
+                <br class="list-group-item">
+                    <h4>Summary:</h4></br>
+                    <div><p>{{summary}}</p></div>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        {% if movies != '' %}
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="{{ movies }}" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a href="{{articleUrl}}" target="_blank">
+                            <input type="button" class="btn btn-lg btn-block btn-outline-primary"
+                                   value="View the entire article"/>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-3">
+            <ul class="list-group mt-2">
+                <li class="list-group-item"><h4>Recommendations</h4></li>
+                {% for i in range(0,5) %}
+                    {% if jso[index][i]['title'] == title %}
+                        {% continue %}
+                    {% endif %}
+                    <li class="list-group-item">
+                        <div class="d-flex flex-column align-items-center">
+                            <img class="align-middle img-thumbnail" src="{{jso[index][i]['urlToImage']}}"
+                                 style="max-width: 100%" alt="image failed to load">
+                            <div class="mt-1">
+                                <a href="/article/{{jso[index][i]['title']}}">
+                                    <h5>
+                                        {{jso[index][i]['title']}}
+                                    </h5>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

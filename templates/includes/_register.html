@@ -1,0 +1,83 @@
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Register</h5>
+					<button type="reset" class="close" data-dismiss="modal" aria-label="Close" onclick="resetVal()">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+				</div>
+				<form onsubmit="return validation(); resetVal();" method="POST" action="/" id="myForm">
+					<div class="modal-body">
+						<div class="form-row">
+							<div class="col">
+								<div class="form-group">
+									<label for="exampleInputFirstName1">First Name*</label>
+									<input type="text" class="form-control" id="exampleInputFirstName1" name="fname" aria-describedby="firstNameHelp" placeholder="eg: Adam" required>
+									<small id="firstNameHelp" class="form-text text-danger"><span class="text-muted">Enter your first name here.</span></small>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<label for="exampleInputLastName1">Last Name*</label>
+									<input type="text" class="form-control" id="exampleInputLastName1" name="lname" aria-describedby="lastNameHelp" placeholder="eg: Trump" required>
+									<small id="lastNameHelp" class="form-text text-danger"><span class="text-muted">Enter your last name here.</span></small>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail1">Email address*</label>
+							<input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="eg: adamtrump@abc.com" required>
+							<small id="emailHelp" class="form-text text-danger"><span class="text-muted">We'll never share your email with anyone else.</span></small>
+						</div>
+						<div class="form-group">
+							<div class="form-row">
+								<div class="col">
+									<label for="exampleInputPassword1">Password*</label>
+									<input type="password" class="form-control" id="exampleInputPassword1" name="password"
+									placeholder="Password"  required>
+								</div>
+								<div class="col">
+									<label for="exampleConfirmPassword1">Confirm Password</label>
+									<input type="password" class="form-control" id="exampleConfirmPassword1"
+									placeholder="Password" required>
+								</div>
+							</div>
+              				<small id="passwordHelp" class="form-text text-danger"><span class="text-muted">The password must contain 8-20 characters with atleast one letter, one number and one alphanumeric.</span></small>
+						</div>
+						<div class="form-group">
+							<label for="datepicker">Date of birth*</label>
+							<input id="datepicker" aria-describedby="dateOfBirthHelp" placeholder="dd/mm/yyyy" required/>
+							<small id="dateOfBirthHelp" class="form-text text-muted">Enter your date of birth</small>
+						</div>
+						<div class="form-group">
+							<label for="countries_phone1">Country*</label>
+							<select id="countries_phone1" name="examplecountry" class="form-control bfh-countries" data-country="IN"></select>
+							<small id="countryHelp" class="form-text text-muted">Enter the country you reside in.</small>
+						</div>
+						<div class="form-group">
+							<label for="exampleContactNo1">Contact No*</label>
+							<input type="text" class="form-control" name="examplecontact" id="exampleContactNo1" required>
+							<small id="contactNoHelp" class="form-text text-danger"><span class="text-muted">We'll never share your contact number with anyone else.</span></small>
+						</div>
+						<div class="form-group">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="exampleTermsAndConditions1" name="1" value="1" required>
+								<label class="form-check-label" for="exampleTermsAndConditions1">
+                By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy.*
+              </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<a href="/login">Already have an account</a>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="reset" onclick="resetVal()" class="btn btn-danger" data-dismiss="modal">Close
+						</button>
+						<button type="submit" class="btn btn-success" id="register">Register</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>

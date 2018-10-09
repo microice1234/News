@@ -1,0 +1,86 @@
+{% include 'includes/_register.html' %}
+<div class="fixed-top">
+       <nav class="navbar navbar-expand-md navbar-light bg-light justify-content-around">
+           <a class="navbar-brand md-3" href="/">
+               <img src="{{url_for('static',filename='img/logo - Copy.png')}}"/>
+               <span class="navbar-text">NewsConnect</span>
+           </a>
+           <form method="get" action="/search/1">
+               <div class="input-group" style="width:  54em;">
+                   <input type="text" name="query" class="form-control" placeholder="Search your daily dose of news">
+                   <div class="input-group-append">
+                       <button class="btn btn-secondary" type="submit">
+                           <i class="fa fa-search"></i>
+                       </button>
+                   </div>
+               </div>
+           </form>
+           <div style="justify-content: flex-end;">
+               <ul class="navbar-nav">
+                   {% if session.logged_in %}
+                   <li class="nav-item">
+                       <a class="nav-link" href="/profile">Profile</a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link" href="/logout">Logout</a>
+                   </li>
+                   {% else %}
+                   <li class="nav-item">
+                       <a class="nav-link" href="/login">Login</a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModalCenter">Register</a>
+                   </li>
+                   {% endif %}
+               </ul>
+           </div>
+       </nav>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-around" id="mainMenu">
+        <div class="container">
+        <ul class="navbar-nav container d-flex justify-content-around">
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/business/1">Business</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/health/1">Health</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/science/1">Science</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/sports/1">Sports</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/technology/1">Tech</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/entertainment/1">Entertainment</a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+    <!--div class="overlay" id="panel">
+        <div class="container">
+            <div class="row container d-flex justify-content-around">
+                <div class="col">
+                    <h3 class="text-light">Business</h3>
+                </div>
+                <div class="col">
+                    <h3 class="text-light">Health</h3>
+                </div>
+                <div class="col">
+                    <h3 class="text-light">Science</h3>
+                </div>
+                <div class="col">
+                    <h3 class="text-light">Sports</h3>
+                </div>
+                <div class="col">
+                    <h3 class="text-light">Tech</h3>
+                </div>
+                <div class="col">
+                    <h3 class="text-light">Entertainment</h3>
+                </div>
+            </div>
+        </div>
+    </div-->
+</div>
