@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="container">
-<div class="card d-flex align-items-center mx-auto mt-5" style="width: 28rem;">
+<div class="card d-flex align-items-center mx-auto mt-5 loginPage">
   <div class="card-body">
     <h5 class="card-title text-center">Login</h5>
     <h6 class="card-subtitle mb-2 text-muted text-center">For benefits on NewsConnect</h6>
@@ -13,13 +13,13 @@
                     <label for="exampleInputEmailLogin">Email address</label>
 				    <input type="email" class="form-control" id="exampleInputEmailLogin"
                            name="emailid" aria-describedby="emailHelp"
-						   placeholder="Enter email">
+						   placeholder="Enter email" value="{{request.form.emailid}}">
 				    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
 				    <label for="exampleInputPasswordLogin">Password</label>
 				    <input type="password" name="password" class="form-control" id="exampleInputPasswordLogin"
-                           placeholder="Password">
+                           placeholder="Password" value="{{ request.form.passwordDb }}">
                 </div>
                 <div class="form-group">
                     <input type="checkbox" id="remember-me" name="remember">

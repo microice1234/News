@@ -1,12 +1,20 @@
 {% include 'includes/_register.html' %}
 <div class="fixed-top">
        <nav class="navbar navbar-expand-md navbar-light bg-light justify-content-around">
-           <a class="navbar-brand md-3" href="/">
+
+           <a class="navbar-brand" href="/">
                <img src="{{url_for('static',filename='img/logo - Copy.png')}}"/>
                <span class="navbar-text">NewsConnect</span>
            </a>
+
+           <button id="hamburger" class="menu-btn reversehider">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+           </button>
+
            <form method="get" action="/search/1">
-               <div class="input-group" style="width:  54em;">
+               <div class="input-group searchbar">
                    <input type="text" name="query" class="form-control" placeholder="Search your daily dose of news">
                    <div class="input-group-append">
                        <button class="btn btn-secondary" type="submit">
@@ -16,28 +24,54 @@
                </div>
            </form>
            <div style="justify-content: flex-end;">
-               <ul class="navbar-nav">
+               <ul class="navbar-nav desktopMenu">
                    {% if session.logged_in %}
-                   <li class="nav-item">
+                   <li class="nav-item profile-login">
                        <a class="nav-link" href="/profile">Profile</a>
                    </li>
-                   <li class="nav-item">
+                   <li class="nav-item logout-register">
                        <a class="nav-link" href="/logout">Logout</a>
                    </li>
                    {% else %}
-                   <li class="nav-item">
+                   <li class="nav-item profile-login">
                        <a class="nav-link" href="/login">Login</a>
                    </li>
-                   <li class="nav-item">
-                       <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModalCenter">Register</a>
+                   <li class="nav-item logout-register">
+                       <a class="nav-link" href="#" data-toggle="modal"
+                          data-target="#exampleModalCenter">Register</a>
                    </li>
                    {% endif %}
                </ul>
            </div>
        </nav>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-around" id="mainMenu">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-around hider desktopMenu" id="mainMenu">
         <div class="container">
         <ul class="navbar-nav container d-flex justify-content-around">
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/business/1">Business</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/health/1">Health</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/science/1">Science</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/sports/1">Sports</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/technology/1">Tech</a>
+            </li>
+            <li class="nav-item menuloader">
+                <a class="nav-link ovrclose" href="/category/entertainment/1">Entertainment</a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-md navbar-dark justify-content-around responsive-menu custColor"
+         id="mainMenu" style="background: rgba(52, 58, 64,0.9);">
+        <div class="container">
+        <ul class="navbar-nav container d-flex justify-content-around ml-auto align-items-center">
             <li class="nav-item menuloader">
                 <a class="nav-link ovrclose" href="/category/business/1">Business</a>
             </li>

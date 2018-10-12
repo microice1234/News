@@ -29,18 +29,24 @@
     <ul class="list-group">
         {% for item in articlePageList[0] %}
             <li class="list-group-item">
-                <div class="d-flex align-items-start align-items-center">
-                    <img class="align-middle img-thumbnail" src="{{item['urlToImage']}}" height="120" width="200" alt="image failed to load">
-                    <div class="ml-3">
-                        <a href="/article/{{item['title']}}">
-                            <h5>
-                                {{item['title']}}
-                            </h5>
-                        </a>
-                        <small class="text-muted text-truncate">{{item['source']['name']}}</small>
-                        <p>
-                            {{item['description']}}
-                        </p>
+                <div class="row" style="display: flow-root">
+                    <div class="d-flex align-items-start">
+                        <div class="col-md-3" style="max-width: 35%">
+                            <img class="align-middle img-thumbnail img_width"
+                                 src="{{item['urlToImage']}}"
+                                 alt="image failed">
+                        </div>
+                        <div class="ml-3 col-md-9" style="max-width: 60%">
+                            <a href="/article/{{item['title']}}">
+                                <h5 class="text-truncate title-size">
+                                    {{item['title']}}
+                                </h5>
+                            </a>
+                            <small class="text-muted text-truncate">{{item['source']['name']}}</small>
+                            <p class="text-truncate para-size">
+                                {{item['description']}}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </li>

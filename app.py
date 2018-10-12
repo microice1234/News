@@ -51,7 +51,7 @@ def index():
         first_name = request.form['fname']
         last_name = request.form['lname']
         email = request.form['email']
-        password = sha256_crypt.encrypt(str(request.form['password']))
+        password = request.form['password']
         country = request.form['examplecountry']
         contactNo = request.form['examplecontact']
 
@@ -71,7 +71,7 @@ def category(categ,pg):
     prevpage = int(pg) - 1
     nextpage = int(pg) + 1
 
-    url = 'https://newsapi.org/v2/top-headlines?' + inserter + 'from=2018-09-12&sortBy=publishedAt&language=en&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
+    url = 'https://newsapi.org/v2/top-headlines?'+inserter+'from=2018-09-12&country=in&sortBy=publishedAt&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
 
     r = requests.get(url)
 
@@ -168,7 +168,7 @@ def profile():
     #TO update
     if request.method == 'POST':
         email = request.form['editEmail']
-        password = sha256_crypt.encrypt(str(request.form['editPassword']))
+        password = request.form['editPassword']
         contactNo = request.form['editContactNo']
         preffList = request.form.getlist('prefflist')
         connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
@@ -217,7 +217,7 @@ def profile():
         for i in preff:
            listofpreff = listofpreff + [i['category']]
     cur.close()
-    return render_template('profile.html',fname=fname,lname=lname,email=email,country=country,contactNo=contactNo, listofpreff=listofpreff)
+    return render_template('profile.html',fname=fname,lname=lname,email=email,country=country,contactNo=contactNo, password=password, listofpreff=listofpreff)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -237,19 +237,21 @@ def login():
         if result > 0:
             # Get stored hash
             data = cur.fetchone()
-            password = data['password']
+            passwordDb = data['password']
             uid = data['id']
             # Compare Passwords
-            if sha256_crypt.verify(password_candidate, password):
+            if password_candidate == passwordDb:
                 # Passed
                 session['logged_in'] = True
                 session['uid'] = uid
 
                 flash('You are now logged in', 'success')
+                '''
                 if checkvalue:
                     resp = make_response(render_template('login.html'))
                     resp.set_cookie('emailid', 'emailid', max_age = 86400)
                     resp.set_cookie('password', 'password_candidate', max_age=86400)
+                '''
                 cur.close()
                 return redirect(url_for('index'))
 

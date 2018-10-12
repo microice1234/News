@@ -76,9 +76,6 @@ outline-primary:focus {
     display: none;
 }
 
-body {
-    padding-top: 8em;
-}
 /* Main Menu Overlay */
 .overlay {
     position: fixed;
@@ -110,16 +107,6 @@ body {
     width: 70%;
     height: 100%;
 }
-.profile-img .file {
-    position: relative;
-    overflow: hidden;
-    margin-top: -20%;
-    width: 70%;
-    border: none;
-    border-radius: 0;
-    font-size: 15px;
-    background: #212529b8;
-}
 .profile-img .file input {
     position: absolute;
     opacity: 0;
@@ -133,9 +120,10 @@ body {
     color: #0062cc;
 }
 .profile-edit-btn{
+    margin-bottom: 15px;
     border: none;
     border-radius: 1.5rem;
-    width: 70%;
+    width: 33%;
     padding: 2%;
     font-weight: 600;
     color: #6c757d;
@@ -252,4 +240,363 @@ body {
     border-color: red;
    /* box-shadow: rgb(109, 163, 221) 0px 0px 0px 8px inset;*/
     transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;
+}
+
+/* images and text in results.html */
+.img_width{
+    max-width: 106px;
+}
+.title-size {
+        font-size: 0.9rem;
+}
+.para-size {
+        font-size: 0.75rem;
+}
+.profile-login {
+    padding-right: 1.5rem;
+}
+.logout-register {
+    padding-left: 1.5rem;
+}
+.searchbar {
+    width: 24em;
+}
+
+.desktopMenu {
+    flex-direction: row;
+}
+
+body {
+    padding-top: 12rem;
+}
+
+.loginPage{
+    width: 22rem;
+}
+
+.hider{
+    display: none;
+}
+.reversehider{
+    display: flex;
+}
+@media (min-width: 481px) and (max-width: 767px)  {
+    .img_width {
+        max-width: 106px;
+    }
+    .para-size {
+        font-size: 0.75rem;
+    }
+    .title-size {
+        font-size: 0.9rem;
+    }
+    .profile-login {
+        padding-right: 1.5rem;
+    }
+    .logout-register {
+        padding-left: 1.5rem;
+    }
+    .searchbar {
+        width: 24rem;
+    }
+
+    body {
+        padding-top: 12rem;
+    }
+    .loginPage{
+        width: 22rem;
+    }
+    .hider{
+        display: none;
+    }
+    .reversehider{
+        display: flex;
+    }
+    .profile-edit-btn{
+        border: none;
+        border-radius: 1.5rem;
+        margin-bottom: 15px;
+        width: 33%;
+        padding: 2%;
+        font-weight: 600;
+        color: #6c757d;
+        cursor: pointer;
+    }
+    .navbar-brand {
+        flex: auto;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 900px) {
+    .img_width {
+        max-width: 220px;
+    }
+
+    .para-size {
+        font-size: 1rem;
+    }
+
+    .title-size {
+        font-size: 1.25rem;
+    }
+    .profile-login {
+        padding-right: 0rem;
+    }
+    .logout-register {
+        padding-left: 0rem;
+    }
+    .searchbar {
+        width: 25em;
+    }
+    body {
+        padding-top: 8em;
+    }
+
+    .loginPage{
+        width: 28rem;
+    }
+    .hider{
+        display: flex;
+    }
+    .reversehider{
+        display: none;
+    }
+    .profile-edit-btn{
+        border: none;
+        border-radius: 1.5rem;
+        width: 70%;
+        padding: 2%;
+        font-weight: 600;
+        color: #6c757d;
+        cursor: pointer;
+    }
+    .navbar-brand {
+        flex: auto;
+    }
+}
+
+@media (min-width: 901px) {
+    .searchbar {
+        width: 54em;
+    }
+    .reversehider{
+        display: none;
+    }
+    .img_width {
+        max-width: 220px;
+    }
+
+    .para-size {
+        font-size: 1rem;
+    }
+
+    .title-size {
+        font-size: 1.25rem;
+    }
+    .profile-login {
+        padding-right: 0rem;
+    }
+    .logout-register {
+        padding-left: 0rem;
+    }
+    body {
+        padding-top: 8em;
+    }
+
+    .loginPage{
+        width: 28rem;
+    }
+    .hider{
+        display: flex;
+    }
+    .profile-edit-btn{
+        border: none;
+        border-radius: 1.5rem;
+        width: 70%;
+        padding: 2%;
+        font-weight: 600;
+        color: #6c757d;
+        cursor: pointer;
+    }
+    .navbar-brand {
+        flex: none;
+    }
+}
+
+/* Responsive menu */
+.responsive-menu{
+	display: none;
+}
+
+.expand {
+	display: block !important;
+}
+
+#hamburger {
+  position: relative;
+  width: 30px;
+  height: 14px;
+  transition: all 300ms cubic-bezier(.61, .01, .42, 1);
+  cursor: pointer;
+  background: transparent;
+  border: 0px;
+}
+
+.line {
+  height: 0px;
+  border: 1.5px solid #5464ca;
+  width: 22px;
+  display: block;
+  position: absolute;
+  transition: all 300ms cubic-bezier(.61, .01, .42, 1);
+  background:#5464ca;
+}
+
+#hamburger:hover {
+  transition-delay: 100ms;
+  transform: scale(1.1);
+}
+
+#hamburger:hover .line:nth-child(3):before {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #F26451;
+}
+
+#hamburger:hover .line {
+  border: 2px solid #5464ca;
+  height: 9px;
+  border-radius: 50%;
+  margin-left: -1px;
+  margin-top: 2px;
+  animation: atom 300ms linear 1;
+  width: 25px;
+  top: 0px;
+  background:transparent;
+}
+
+#hamburger:focus {
+  outline: 0px;
+}
+
+.line:nth-child(1) {
+  top: 0px;
+}
+
+.line:nth-child(2) {
+  top: 8px;
+}
+
+.line:nth-child(3) {
+  top: 16px;
+}
+
+.line:nth-child(3):before {
+  opacity: 0;
+  animation: ball 1.5s linear infinite;
+  content: '';
+  border: 2px solid #fff;
+  display: block;
+  position: relative;
+  top: 0.25px;
+}
+
+#hamburger:hover .line:nth-child(1) {
+  transform: rotate(-33deg);
+}
+
+#hamburger:hover .line:nth-child(2) {
+  transform: rotate(90deg);
+}
+
+#hamburger:hover .line:nth-child(3) {
+  transform: rotate(33deg);
+}
+
+#hamburger:hover .line:nth-child(3):before {
+  opacity: 1;
+  transition: opacity 600ms cubic-bezier(.61, .01, .42, 1);
+  ;
+}
+
+#hamburger:active:hover .line:nth-child(3):before,
+#hamburger:active .line:nth-child(3):before,
+#hamburger:active .line:nth-child(2) {
+  opacity: 0;
+  transition: all 200ms;
+}
+
+#hamburger:active div {
+  border: 1.5px solid #fff;
+  height: 0px;
+  border-radius: 0%;
+  margin-left: -1px;
+  margin-top: 6px;
+  animation: division 300ms linear 1;
+  width: 25px;
+  top: 0px;
+}
+
+#hamburger:active .line:nth-child(2) {
+  width: 0px;
+}
+
+#hamburger:active .line:nth-child(3) {
+  transform: rotate(45deg);
+}
+
+#hamburger:active .line:nth-child(1) {
+  transform: rotate(-45deg);
+}
+
+@keyframes atom {
+  0% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes division {
+  0% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes ball {
+  0% {
+    left: -20%;
+    top: 10%;
+  }
+  10% {
+    left: 10%;
+    top: -35%;
+  }
+  25% {
+    left: 45%;
+    top: -50%;
+  }
+  40% {
+    left: 80%;
+    top: -20%;
+  }
+  50% {
+    left: 98%;
+    top: 18%;
+  }
+  60% {
+    left: 80%;
+    top: 50%;
+  }
+  75% {
+    left: 45%;
+    top: 80%;
+  }
+  90% {
+    left: 0%;
+    top: 60%;
+  }
+  100% {
+    left: -20%;
+    top: 10%;
+  }
 }
