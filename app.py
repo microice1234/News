@@ -71,7 +71,7 @@ def category(categ,pg):
     prevpage = int(pg) - 1
     nextpage = int(pg) + 1
 
-    url = 'https://newsapi.org/v2/top-headlines?'+inserter+'from=2018-09-12&country=in&sortBy=publishedAt&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
+    url = 'https://newsapi.org/v2/top-headlines?'+inserter+'country=in&sortBy=publishedAt&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
 
     r = requests.get(url)
 
@@ -80,7 +80,6 @@ def category(categ,pg):
     articlePageList = []
     jso = r.json()
     articlePageList.append(r.json()['articles'])
-    # session['req'] = 'yes'
     lastpage = int(jso['totalResults'] / 20 + 1)
     return render_template('results.html', jso=jso, articlePageList=articlePageList, pg=pg, userReq=categ, prevpage=prevpage, nextpage=nextpage, lastpage=str(lastpage))
 
@@ -92,7 +91,7 @@ def search(pg):
     prevpage = int(pg) - 1
     nextpage = int(pg) + 1
 
-    url = 'https://newsapi.org/v2/everything?'+inserter+'from=2018-09-12&sortBy=publishedAt&language=en&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
+    url = 'https://newsapi.org/v2/everything?'+inserter+'sortBy=publishedAt&language=en&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
 
     r = requests.get(url)
 
@@ -100,8 +99,8 @@ def search(pg):
     global articlePageList
     articlePageList = []
     jso = r.json()
+    print(jso)
     articlePageList.append(r.json()['articles'])
-    #session['req'] = 'yes'
     lastpage = int(jso['totalResults']/20 + 1)
 
     return render_template('results.html', jso=jso, articlePageList=articlePageList, pg=pg, userReq=userReq, prevpage=prevpage, nextpage=nextpage, lastpage=str(lastpage))
@@ -130,7 +129,7 @@ def article(title):
     try:
         article.parse()
     except:
-        neededImgUrl = "url_for('static',filename='img/something-went-wrong.gif')"
+        neededImgUrl = "notPresent"
 
 
     article.nlp()
@@ -146,7 +145,7 @@ def article(title):
         movies = ''
 
     if neededImgUrl == None:
-        neededImgUrl = "url_for('static',filename='img/something-went-wrong.gif')"
+        neededImgUrl = "notPresent"
 
     print(neededImgUrl)
     return render_template('article.html',summary=summary, title = title,  neededImgUrl = neededImgUrl, movies=movies, date = dateStr, articleUrl = url, jso = articlePageList, index=indexOfArticleCategory)

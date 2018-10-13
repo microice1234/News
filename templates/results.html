@@ -33,7 +33,7 @@
                     <div class="d-flex align-items-start">
                         <div class="col-md-3" style="max-width: 35%">
                             <img class="align-middle img-thumbnail img_width"
-                                 src="{{item['urlToImage']}}"
+                                 src="{% if item['urlToImage'] == None or item['urlToImage'] == '' %}{{url_for('static',filename='img/something-went-wrong.gif')}}{% else %}{{item['urlToImage']}}{% endif %}"
                                  alt="image failed">
                         </div>
                         <div class="ml-3 col-md-9" style="max-width: 60%">

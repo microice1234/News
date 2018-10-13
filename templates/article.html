@@ -13,7 +13,8 @@
                 </li>
                 <li class="list-group-item">
                     <div>
-                        <img class="responsive" style="max-width: 100%;" src="{{ neededImgUrl }}"/>
+                        <img class="responsive" style="max-width: 100%;"
+                             src="{% if neededImgUrl != 'notPresent' %}{{ neededImgUrl }}{% else %}{{url_for('static',filename='img/something-went-wrong.gif')}}{% endif %}"/>
                     </div>
                 </li>
                 <br class="list-group-item">
