@@ -4,6 +4,7 @@ from newspaper import Article
 #import nltk
 #import datetime
 import pymysql
+from functools import wraps
 from passlib.hash import sha256_crypt
 
 app = Flask(__name__, static_folder='static')
@@ -46,22 +47,6 @@ def index():
     url1 = 'https://newsapi.org/v2/top-headlines?country=in&pageSize=15&page=1&category=health&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
     r = requests.get(url1)
     articlePageList.append(r.json()['articles'])
-
-    if request.method == 'POST':
-        first_name = request.form['fname']
-        last_name = request.form['lname']
-        email = request.form['email']
-        password = request.form['password']
-        country = request.form['examplecountry']
-        contactNo = request.form['examplecontact']
-
-        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
-        with connection.cursor() as cur:
-            sql = "INSERT INTO person (first_name, last_name, email, password, country, contactNo) VALUES (%s, %s, %s, %s, %s, %s)"
-            cur.execute(sql, (first_name, last_name, email, password, country, contactNo))
-        connection.commit()
-
-        cur.close()
 
     return render_template('index.html', jsohome1=articlePageList)
 
@@ -150,17 +135,120 @@ def article(title):
     print(neededImgUrl)
     return render_template('article.html',summary=summary, title = title,  neededImgUrl = neededImgUrl, movies=movies, date = dateStr, articleUrl = url, jso = articlePageList, index=indexOfArticleCategory)
 
-'''
-@app.route("/dbtest")
-def dbtest():
-    connection = pymysql.connect(host='localhost',user='root',password='',db='allinonenews')
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM person")
-        all1 = cursor.fetchall()
-        print(all1)
-    return "success"
-'''
+#Check if logged out
+def is_logged_out(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' not in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('index'))
+    return wrap
+
+@app.route("/register", methods=['GET', 'POST'])
+@is_logged_out
+def register():
+    if request.method == 'POST':
+        first_name = request.form['fname']
+        last_name = request.form['lname']
+        email = request.form['email']
+        password = request.form['password']
+        country = request.form['examplecountry']
+        contactNo = request.form['examplecontact']
+
+        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
+        with connection.cursor(pymysql.cursors.DictCursor) as cur:
+            sql = "SELECT * FROM person WHERE email = %s"
+            result = cur.execute(sql, (email))
+        connection.commit()
+
+        if result == 0:
+            connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
+            with connection.cursor() as cur:
+                sql = "INSERT INTO person (first_name, last_name, email, password, country, contactNo) VALUES (%s, %s, %s, %s, %s, %s)"
+                cur.execute(sql, (first_name, last_name, email, password, country, contactNo))
+            connection.commit()
+            cur.close()
+            flash('You have successfully registered.', 'success')
+
+            return redirect(url_for('login'))
+        else:
+            error = 'An account with this email id already exists'
+            cur.close()
+            return render_template('register.html', error=error)
+
+    return render_template('register.html')
+
+@app.route("/login", methods=['GET', 'POST'])
+@is_logged_out
+def login():
+    if request.method == 'POST':
+        # Get Form Fields
+        emailid = request.form['emailid']
+        password_candidate = request.form['password']
+        checkvalue = request.form.get('remember')
+
+        # Create cursor
+        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
+        with connection.cursor(pymysql.cursors.DictCursor) as cur:
+            sql = "SELECT * FROM person WHERE email = %s"
+            result = cur.execute(sql, (emailid))
+        connection.commit()
+
+        if result > 0:
+            # Get stored hash
+            data = cur.fetchone()
+            passwordDb = data['password']
+            uid = data['id']
+            # Compare Passwords
+            if password_candidate == passwordDb:
+                # Passed
+                session['logged_in'] = True
+                session['uid'] = uid
+
+                flash('You are now logged in', 'success')
+                '''
+                if checkvalue:
+                    resp = make_response(render_template('login.html'))
+                    resp.set_cookie('emailid', 'emailid', max_age = 86400)
+                    resp.set_cookie('password', 'password_candidate', max_age=86400)
+                '''
+                cur.close()
+                return redirect(url_for('index'))
+
+            else:
+                error = 'Password incorrect'
+                cur.close()
+                return render_template('login.html', error=error)
+
+        else:
+            error = 'No account with this Email exists.'
+            cur.close()
+            return render_template('login.html', error=error)
+
+    return render_template('login.html')
+
+
+#Check if logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('You must login to view this page!', 'danger')
+            return redirect(url_for('login'))
+    return wrap
+
+# Logout
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You are now logged out', 'success')
+    return redirect(url_for('login'))
+
 @app.route("/profile", methods=['GET', 'POST'])
+@is_logged_in
 def profile():
     uid = session['uid']
     listofpreff = []
@@ -217,61 +305,6 @@ def profile():
            listofpreff = listofpreff + [i['category']]
     cur.close()
     return render_template('profile.html',fname=fname,lname=lname,email=email,country=country,contactNo=contactNo, password=password, listofpreff=listofpreff)
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        # Get Form Fields
-        emailid = request.form['emailid']
-        password_candidate = request.form['password']
-        checkvalue = request.form.get('remember')
-
-        # Create cursor
-        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
-        with connection.cursor(pymysql.cursors.DictCursor) as cur:
-            sql = "SELECT * FROM person WHERE email = %s"
-            result = cur.execute(sql, (emailid))
-        connection.commit()
-
-        if result > 0:
-            # Get stored hash
-            data = cur.fetchone()
-            passwordDb = data['password']
-            uid = data['id']
-            # Compare Passwords
-            if password_candidate == passwordDb:
-                # Passed
-                session['logged_in'] = True
-                session['uid'] = uid
-
-                flash('You are now logged in', 'success')
-                '''
-                if checkvalue:
-                    resp = make_response(render_template('login.html'))
-                    resp.set_cookie('emailid', 'emailid', max_age = 86400)
-                    resp.set_cookie('password', 'password_candidate', max_age=86400)
-                '''
-                cur.close()
-                return redirect(url_for('index'))
-
-            else:
-                error = 'Invalid login'
-                cur.close()
-                return render_template('login.html', error=error)
-
-        else:
-            error = 'Username not found'
-            cur.close()
-            return render_template('login.html', error=error)
-
-    return render_template('login.html')
-
-# Logout
-@app.route('/logout')
-def logout():
-    session.clear()
-    flash('You are now logged out', 'success')
-    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':

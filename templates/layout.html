@@ -12,8 +12,21 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <script>
+          var messages = {{ messages | safe }};
+          for (var i=0; i<messages.length; i++) {
+            alert(messages[i]);
+          }
+        </script>
+      {% endif %}
+    {% endwith %}
     {% include 'includes/_header.html' %}
     <div class="container-fluid">
+        {% if error %}
+            <div class="alert alert-danger loginPage mx-auto mt-2" style="text-align: center;">{{error}}</div>
+        {% endif %}
         {% block body %}{% endblock %}
     </div>
     {% include 'includes/_footer.html' %}
