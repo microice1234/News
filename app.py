@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, logging,flash
+from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, logging,flash,make_response
 import requests
 from newspaper import Article
 #import nltk
@@ -182,11 +182,14 @@ def register():
 @app.route("/login", methods=['GET', 'POST'])
 @is_logged_out
 def login():
+    remember = request.cookies.get('uid')
+    print('remember=',remember)
     if request.method == 'POST':
         # Get Form Fields
         emailid = request.form['emailid']
         password_candidate = request.form['password']
-        checkvalue = request.form.get('remember')
+        checkvalue = request.form.getlist('remember')
+        print('check=',checkvalue)
 
         # Create cursor
         connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
@@ -207,12 +210,13 @@ def login():
                 session['uid'] = uid
 
                 flash('You are now logged in', 'success')
-                '''
+
                 if checkvalue:
-                    resp = make_response(render_template('login.html'))
-                    resp.set_cookie('emailid', 'emailid', max_age = 86400)
-                    resp.set_cookie('password', 'password_candidate', max_age=86400)
-                '''
+                    resp = make_response(redirect(url_for('index')))
+                    resp.set_cookie('uid', str(uid), max_age = 86400)
+                    cur.close()
+                    return resp
+
                 cur.close()
                 return redirect(url_for('index'))
 
@@ -225,6 +229,17 @@ def login():
             error = 'No account with this Email exists.'
             cur.close()
             return render_template('login.html', error=error)
+
+    remembered = request.cookies.get('uid')
+    print('rem = ', remembered)
+    if remembered:
+        session['logged_in'] = True
+        session['uid'] = remembered
+
+        flash('You are now logged in', 'success')
+        resp = make_response(redirect(url_for('index')))
+        resp.set_cookie('uid', str(remembered), max_age=86400)
+        return resp
 
     return render_template('login.html')
 
