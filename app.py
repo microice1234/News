@@ -375,35 +375,6 @@ def profile():
     print(listofrecom)
     return render_template('profile.html',fname=fname,lname=lname,email=email,country=country,contactNo=contactNo, password=password, listofpreff=listofpreff, listofrecom=listofrecom)
 
-
-@app.route("/feed", methods=['GET', 'POST'])
-def feed():
-    listofpreff = []
-    articlePageListRec = []
-    zipper = []
-    if session['logged_in'] == True:
-        uid = session['uid']
-
-        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
-        with connection.cursor(pymysql.cursors.DictCursor) as cur:
-            sql = "SELECT * FROM prefferences WHERE id = %s"
-            result = cur.execute(sql, (uid))
-        connection.commit()
-
-        if result > 0:
-            # Get stored hash
-            preff = cur.fetchall()
-            for i in preff:
-                listofpreff = listofpreff + [i['category']]
-
-            for prefference in listofpreff:
-                url = 'https://newsapi.org/v2/everything?language=en&pageSize=3&page=1&q=' + prefference + '&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
-                r = requests.get(url)
-                articlePageListRec.append(r.json()['articles'])
-        cur.close()
-        zipper = zip(articlePageListRec,listofpreff)
-    return render_template('feed.html', zipper=zipper)
-
 if __name__ == '__main__':
     app.secret_key = 'super secret key'
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
