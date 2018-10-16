@@ -721,3 +721,10 @@ body{
     height: 3rem;
     width: 3rem;
 }
+
+H1 {
+    border-left: 2px solid;
+    border-color: #5464ca;
+    border-left-width: 0.35rem;
+    padding-left: 15px;
+}

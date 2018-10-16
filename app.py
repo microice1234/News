@@ -1,11 +1,8 @@
-from flask import Flask, render_template, send_from_directory, request, session, redirect, url_for, logging,flash,make_response
+from flask import Flask, render_template, request, session, redirect, url_for,flash,make_response
 import requests
 from newspaper import Article
-#import nltk
-#import datetime
 import pymysql
 from functools import wraps
-import itertools
 
 app = Flask(__name__, static_folder='static')
 
