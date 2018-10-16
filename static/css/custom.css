@@ -268,6 +268,7 @@ outline-primary:focus {
 
 body {
     padding-top: 12rem;
+    font-family: 'PT Serif', serif;
 }
 
 .loginPage{
@@ -279,6 +280,11 @@ body {
 }
 .reversehider{
     display: flex;
+}
+
+.feed-img{
+    height: 135px;
+    width: 100%;
 }
 @media (min-width: 481px) and (max-width: 767px)  {
     .img_width {
@@ -324,6 +330,13 @@ body {
     }
     .navbar-brand {
         flex: auto;
+    }
+    .listflexer {
+        flex-direction: column;
+    }
+    .feed-img{
+        height: 380px;
+        width: 100%;
     }
 }
 
@@ -373,6 +386,9 @@ body {
     .navbar-brand {
         flex: auto;
     }
+    .listflexer {
+        flex-direction: column;
+    }
 }
 
 @media (min-width: 901px) {
@@ -420,6 +436,9 @@ body {
     }
     .navbar-brand {
         flex: none;
+    }
+    .listflexer {
+        flex-direction: column;
     }
 }
 
@@ -689,4 +708,16 @@ body{
 #myFooter .container-fluid{
     padding-right: 0px;
     padding-left: 0px;
+}
+
+.carousel-control-prev-icon {
+    background-image: url(https://inewsletter.co/static/img/view/prev.4447376caa8c.png);
+    height: 3rem;
+    width: 3rem;
+}
+
+.carousel-control-next-icon {
+    background-image: url(https://inewsletter.co/static/img/view/next.860e7d7910e9.png);
+    height: 3rem;
+    width: 3rem;
 }

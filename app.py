@@ -5,7 +5,7 @@ from newspaper import Article
 #import datetime
 import pymysql
 from functools import wraps
-from passlib.hash import sha256_crypt
+import itertools
 
 app = Flask(__name__, static_folder='static')
 
@@ -97,6 +97,9 @@ def article(title):
     neededImgUrl = ''
     indexOfArticleCategory = 0
     flag = 0
+    categoryCount = 0
+    for articleList in articlePageList:
+        categoryCount+=1
     for articleList in articlePageList:
         for item in articleList:
             if item['title']== title:
@@ -132,8 +135,33 @@ def article(title):
     if neededImgUrl == None:
         neededImgUrl = "notPresent"
 
-    print(neededImgUrl)
-    return render_template('article.html',summary=summary, title = title,  neededImgUrl = neededImgUrl, movies=movies, date = dateStr, articleUrl = url, jso = articlePageList, index=indexOfArticleCategory)
+    ### Recommendations ###
+    listofpreff = []
+    articlePageListRec = []
+    global zipper
+    if session['logged_in'] == True:
+        uid = session['uid']
+
+        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
+        with connection.cursor(pymysql.cursors.DictCursor) as cur:
+            sql = "SELECT * FROM prefferences WHERE id = %s"
+            result = cur.execute(sql, (uid))
+        connection.commit()
+
+        if result > 0:
+            # Get stored hash
+            preff = cur.fetchall()
+            for i in preff:
+                listofpreff = listofpreff + [i['category']]
+
+            for prefference in listofpreff:
+                url = 'https://newsapi.org/v2/everything?language=en&pageSize=3&page=1&q=' + prefference + '&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
+                r = requests.get(url)
+                articlePageListRec.append(r.json()['articles'])
+        cur.close()
+    zipper = zip(articlePageListRec, listofpreff)
+
+    return render_template('article.html',summary=summary, title = title, index=indexOfArticleCategory,  neededImgUrl = neededImgUrl, movies=movies, date = dateStr, articleUrl = url, jso = articlePageList, zipper=zipper)
 
 #Check if logged out
 def is_logged_out(f):
@@ -257,10 +285,13 @@ def is_logged_in(f):
 
 # Logout
 @app.route('/logout')
+@is_logged_in
 def logout():
     session.clear()
+    resp = make_response(redirect(url_for('index')))
+    resp.set_cookie('uid', '', max_age=86400)
     flash('You are now logged out', 'success')
-    return redirect(url_for('login'))
+    return resp
 
 @app.route("/profile", methods=['GET', 'POST'])
 @is_logged_in
@@ -273,11 +304,21 @@ def profile():
         password = request.form['editPassword']
         contactNo = request.form['editContactNo']
         preffList = request.form.getlist('prefflist')
+        customCateg = request.form['customCategory']
         connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
         with connection.cursor() as cur:
             sql = "UPDATE person SET email = %s, password = %s, contactNo = %s WHERE id = %s"
             cur.execute(sql, (email, password, contactNo, uid))
         connection.commit()
+
+        cur.close()
+
+        if customCateg!='':
+            connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
+            with connection.cursor() as cur:
+                sql = "INSERT into recommendations VALUES (%s)"
+                cur.execute(sql, (customCateg))
+            connection.commit()
 
         cur.close()
         connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
@@ -319,8 +360,49 @@ def profile():
         for i in preff:
            listofpreff = listofpreff + [i['category']]
     cur.close()
-    return render_template('profile.html',fname=fname,lname=lname,email=email,country=country,contactNo=contactNo, password=password, listofpreff=listofpreff)
 
+    with connection.cursor(pymysql.cursors.DictCursor) as cur:
+        sql = "SELECT * FROM recommendations"
+        result = cur.execute(sql)
+    connection.commit()
+    if result > 0:
+        # Get stored hash
+        recom = cur.fetchall()
+        listofrecom = []
+        for i in recom:
+           listofrecom = listofrecom + [i['categories']]
+    cur.close()
+    print(listofrecom)
+    return render_template('profile.html',fname=fname,lname=lname,email=email,country=country,contactNo=contactNo, password=password, listofpreff=listofpreff, listofrecom=listofrecom)
+
+
+@app.route("/feed", methods=['GET', 'POST'])
+def feed():
+    listofpreff = []
+    articlePageListRec = []
+    zipper = []
+    if session['logged_in'] == True:
+        uid = session['uid']
+
+        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
+        with connection.cursor(pymysql.cursors.DictCursor) as cur:
+            sql = "SELECT * FROM prefferences WHERE id = %s"
+            result = cur.execute(sql, (uid))
+        connection.commit()
+
+        if result > 0:
+            # Get stored hash
+            preff = cur.fetchall()
+            for i in preff:
+                listofpreff = listofpreff + [i['category']]
+
+            for prefference in listofpreff:
+                url = 'https://newsapi.org/v2/everything?language=en&pageSize=3&page=1&q=' + prefference + '&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
+                r = requests.get(url)
+                articlePageListRec.append(r.json()['articles'])
+        cur.close()
+        zipper = zip(articlePageListRec,listofpreff)
+    return render_template('feed.html', zipper=zipper)
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'

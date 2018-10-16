@@ -132,3 +132,29 @@ function editEnable(id) {
     }
 }
 
+function validateProfile() {
+    var password = document.getElementById('editPassword').value;
+
+    if (password == "") {
+      document.getElementById('passwordHelp1').innerHTML = " ** Password field cannot be empty";
+      return false;
+    }
+    if ((password.length <= 8) || (password.length > 20)) {
+      document.getElementById('passwordHelp1').innerHTML = " ** The password must contain 8-20 characters";
+      return false;
+    }
+    if (password.search(/[a-z]/i) < 0) {
+      document.getElementById('passwordHelp1').innerHTML = " ** Passwords must contain atleast one character";
+      return false;
+    }
+
+    if (password.search(/[0-9]/) < 0) {
+      document.getElementById('passwordHelp1').innerHTML = " ** Passwords must contain atleast one digit";
+      return false;
+    }
+
+    if (password.search(/[!@#$%^&*]/) < 0) {
+      document.getElementById('passwordHelp1').innerHTML = " ** Passwords must contain atleast one special character";
+      return false;
+    }
+}

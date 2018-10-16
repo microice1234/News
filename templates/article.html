@@ -17,8 +17,8 @@
                              src="{% if neededImgUrl != 'notPresent' %}{{ neededImgUrl }}{% else %}{{url_for('static',filename='img/something-went-wrong.gif')}}{% endif %}"/>
                     </div>
                 </li>
-                <br class="list-group-item">
-                    <h4>Summary:</h4></br>
+                <li class="list-group-item">
+                    <h4>Summary:</h4><br/>
                     <div><p>{{summary}}</p></div>
                 </li>
                 <li class="list-group-item">
@@ -36,6 +36,31 @@
                         </a>
                     </div>
                 </li>
+            {% if session.logged_in %}
+            {% for item,prefference in zipper %}
+                <li class="list-group-item">
+            <br/><h4>{{prefference}}</h4><br/>
+            <div class="row">
+                <div class="card-deck">
+                {% for article in item %}
+                    <div class="card">
+                        <img class="card-img-top feed-img"
+                             src="{% if article['urlToImage'] == None or article['urlToImage'] == '' %}{{url_for('static',filename='img/something-went-wrong.gif')}}{% else %}{{article['urlToImage']}}{% endif %}"
+                                              alt="image failed to load">
+                        <div class="card-body">
+                            <a href="/article/{{article['title']}}">
+                                <h5 class="card-title">
+                                    {{article['title']}}
+                                </h5>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+                    </li>
+            {% endfor %}
+            {% endif %}
             </ul>
         </div>
 
@@ -48,11 +73,11 @@
                     {% endif %}
                     <li class="list-group-item">
                         <div class="d-flex flex-column align-items-center">
-                            <img class="align-middle img-thumbnail" src="{{jso[index][i]['urlToImage']}}"
+                            <img class="align-middle img-thumbnail" src="{% if jso[index][i]['urlToImage'] == None or jso[index][i]['urlToImage'] == '' %}{{url_for('static',filename='img/something-went-wrong.gif')}}{% else %}{{jso[index][i]['urlToImage']}}{% endif %}"
                                  style="max-width: 100%" alt="image failed to load">
                             <div class="mt-1">
                                 <a href="/article/{{jso[index][i]['title']}}">
-                                    <h5>
+                                    <h5 class="title-size">
                                         {{jso[index][i]['title']}}
                                     </h5>
                                 </a>
@@ -63,7 +88,5 @@
             </ul>
         </div>
     </div>
-
-
 </div>
 {% endblock %}
