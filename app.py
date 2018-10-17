@@ -9,6 +9,7 @@ app = Flask(__name__, static_folder='static')
 jso = None
 jsohome = None
 articlePageList = []
+articlePageListRec = []
 
 @app.route("/", methods=['GET','POST'])
 def index():
@@ -90,24 +91,44 @@ def search(pg):
 @app.route("/article/<string:title>")
 def article(title):
     global articlePageList
+    global articlePageListRec
     neededUrl = ''
     neededImgUrl = ''
     indexOfArticleCategory = 0
     flag = 0
-    categoryCount = 0
-    for articleList in articlePageList:
-        categoryCount+=1
-    for articleList in articlePageList:
-        for item in articleList:
-            if item['title']== title:
-                neededUrl = item['url']
-                neededImgUrl = item['urlToImage']
-                flag = 1
+    flag2 = 0
+    pagesize = 5
+    if flag2 == 0:
+        for articleList in articlePageList:
+            for item in articleList:
+                if item['title']== title:
+                    neededUrl = item['url']
+                    neededImgUrl = item['urlToImage']
+                    flag = 1
+                    flag2 = 1
+                    break
+            if flag == 1:
                 break
-        if flag == 1:
-            break
-        indexOfArticleCategory+=1
+            indexOfArticleCategory+=1
+            print(indexOfArticleCategory)
     #nltk.download('punkt')
+    if flag2 == 0:
+        indexOfArticleCategory = 0
+        for articleList in articlePageListRec:
+            for item in articleList:
+                if item['title']== title:
+                    neededUrl = item['url']
+                    neededImgUrl = item['urlToImage']
+                    flag = 1
+                    flag2 = 0
+                    pagesize = 3
+                    break
+            if flag == 1:
+                articlePageList = articlePageListRec
+                break
+            indexOfArticleCategory += 1
+            print(indexOfArticleCategory)
+
     url = neededUrl
     article = Article(url)
     article.download()
@@ -158,7 +179,7 @@ def article(title):
         cur.close()
     zipper = zip(articlePageListRec, listofpreff)
 
-    return render_template('article.html',summary=summary, title = title, index=indexOfArticleCategory,  neededImgUrl = neededImgUrl, movies=movies, date = dateStr, articleUrl = url, jso = articlePageList, zipper=zipper)
+    return render_template('article.html',summary=summary, title = title, index=indexOfArticleCategory,  neededImgUrl = neededImgUrl, movies=movies, date = dateStr, articleUrl = url, jso = articlePageList, zipper=zipper, pagesize=pagesize)
 
 #Check if logged out
 def is_logged_out(f):

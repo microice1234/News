@@ -268,7 +268,8 @@ outline-primary:focus {
 
 body {
     padding-top: 12rem;
-    font-family: 'PT Serif', serif;
+    font-family: 'Fira Sans Condensed', sans-serif;
+    background: #f6f6f6;
 }
 
 .loginPage{
