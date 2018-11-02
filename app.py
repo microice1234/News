@@ -11,6 +11,8 @@ jsohome = None
 articlePageList = []
 articlePageListRec = []
 
+firstTime = 0
+
 @app.route("/", methods=['GET','POST'])
 def index():
 
@@ -92,6 +94,8 @@ def search(pg):
 def article(title):
     global articlePageList
     global articlePageListRec
+    global firstTime
+
     neededUrl = ''
     neededImgUrl = ''
     indexOfArticleCategory = 0
@@ -157,26 +161,27 @@ def article(title):
     listofpreff = []
     articlePageListRec = []
     global zipper
-    if session['logged_in'] == True:
-        uid = session['uid']
+    if firstTime == 1:
+        if session:
+            uid = session['uid']
 
-        connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
-        with connection.cursor(pymysql.cursors.DictCursor) as cur:
-            sql = "SELECT * FROM prefferences WHERE id = %s"
-            result = cur.execute(sql, (uid))
-        connection.commit()
+            connection = pymysql.connect(host='localhost', user='root', password='', db='allinonenews')
+            with connection.cursor(pymysql.cursors.DictCursor) as cur:
+                sql = "SELECT * FROM prefferences WHERE id = %s"
+                result = cur.execute(sql, (uid))
+            connection.commit()
 
-        if result > 0:
-            # Get stored hash
-            preff = cur.fetchall()
-            for i in preff:
-                listofpreff = listofpreff + [i['category']]
+            if result > 0:
+                # Get stored hash
+                preff = cur.fetchall()
+                for i in preff:
+                    listofpreff = listofpreff + [i['category']]
 
-            for prefference in listofpreff:
-                url = 'https://newsapi.org/v2/everything?language=en&pageSize=3&page=1&q=' + prefference + '&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
-                r = requests.get(url)
-                articlePageListRec.append(r.json()['articles'])
-        cur.close()
+                for prefference in listofpreff:
+                    url = 'https://newsapi.org/v2/everything?language=en&pageSize=3&page=1&q=' + prefference + '&apiKey=097f0f6fb89b43539cbaa31372c3f92d'
+                    r = requests.get(url)
+                    articlePageListRec.append(r.json()['articles'])
+            cur.close()
     zipper = zip(articlePageListRec, listofpreff)
 
     return render_template('article.html',summary=summary, title = title, index=indexOfArticleCategory,  neededImgUrl = neededImgUrl, movies=movies, date = dateStr, articleUrl = url, jso = articlePageList, zipper=zipper, pagesize=pagesize)
@@ -252,6 +257,8 @@ def login():
             # Compare Passwords
             if password_candidate == passwordDb:
                 # Passed
+                global firstTime
+                firstTime = 1
                 session['logged_in'] = True
                 session['uid'] = uid
 
