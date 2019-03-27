@@ -1,8 +1,8 @@
 # NewsConnect
 
-One stop shop for all your daily news
+One stop shop for all your daily news.
 
-This website helps you to get all your daily news from various different sources at a single place. Using News API we arre able to provide news from 30,000 sources and blogs. It has a responsive design and works well on mobile browsers.
+This website helps you to get all your daily news from various different sources at a single place. Using News API we are able to provide news from 30,000 sources and blogs. It has a responsive design and works well on mobile browsers.
 
 <img src="Images/home.PNG" width="700">
 
