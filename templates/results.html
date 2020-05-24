@@ -26,7 +26,7 @@
 
         </ul>
     </nav>
-    <ul class="list-group">
+    <ul class="list-group" id="result-list-group">
         {% for item in articlePageList[0] %}
             <li class="list-group-item">
                 <div class="row" style="display: flow-root">
@@ -68,5 +68,58 @@
 
     </ul>
 </nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+        
+        function fetchNews(sourceUrl){
+            $.ajax({
+                url: sourceUrl,
+                type: 'GET',
+                dataType: "xml"
+            }).done(function(xml) {
+                var newsResult = [];
+                console.log(document.getElementById('result-list-group'));
+                document.getElementById('result-list-group').innerHTML = [];
+
+
+                $(xml).find('item').each(function(){
+                    var title = $(this).find("title").text();
+                    var link = $(this).find("link").text();
+                    var description = $(this).find("description").text();
+                    var image = $(this).find('media\\:content, content').attr('url');
+
+                    var htmlString = 
+                    "<li class='list-group-item'> <div class='row' style='display: flow-root'> <div class='d-flex align-items-start'> <div class='col-md-3' style='max-width: 35%'><img class='align-middle img-thumbnail img_width' src='" 
+                    + image + "' alt='image failed'> </div> <div class='ml-3 col-md-9' style='max-width: 60%'> <a href='" + link + "'> <h5 class='text-truncate title-size'>"
+                    + title + "</h5> </a> <small class='text-muted text-truncate'> NY Times </small> <p class='text-truncate para-size'>" 
+                    + description + "</p></div></div></div></li>";
+                    document.getElementById('result-list-group').innerHTML += htmlString;
+
+                });
+            });
+        }
+
+        var counter = 0;
+        let urlList = [
+            "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/US.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/Education.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/Dance.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/Movies.xml",
+            "https://rss.nytimes.com/services/xml/rss/nyt/Television.xml"
+        ];
+
+        setInterval(function(){ 
+            fetchNews(urlList[counter]);
+            counter = (counter+ 1) % urlList.length;
+            console.log(counter);
+        }, 5 * 1000);
+    });
+
+</script>
 </div>
 {% endblock %}
